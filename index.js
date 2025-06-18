@@ -20,9 +20,7 @@ app.post('/api/chat', async (req, res) => {
     });
     res.json({ reply: chat.choices[0].message.content });
   } catch (err) {
-    res.status(500).json({ message: 'Error al comunicarse con ChatGPT' });
+    res.status(500).json({ message: 'Error al comunicarse con OpenAI' });
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
