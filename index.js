@@ -10,11 +10,16 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.post('/api/chat', async (req, res) => {
   const question = req.body.question;
+  // Validación por seguridad
+  if (!question || question.trim() === '') {
+    return res.status(400).json({ message: 'Pregunta no proporcionada' });
+  }
+  
   try {
     const chat = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [
-        { role: 'system', content: 'Responde como un asesor profesional de Seguros La Paz en México. Usa un tono cálido, agrega temas de consientización breves, emojis donde ayude, bullet points cuando sea lista, títulos cortos en <strong>, y al final invita a contactar a Seguros La Paz para asesoría o cotización. Responde en HTML limpio, no uses solo texto plano. Responde solo preguntas de seguros en México' },
+        { role: 'system', content: 'Eres un asesor profesional de Seguros La Paz. Solo puedes responder preguntas sobre seguros en México, especialmente seguros GNP. Responde en HTML amigable, usando emojis y bullet points cuando sea útil. No respondas preguntas fuera de ese tema. Si preguntan algo distinto, contesta amablemente que solo puedes ayudar sobre seguros y cotizaciones. Al final de cada respuesta, invita a contactar a Seguros La Paz para una asesoría o cotización más detallada. Nunca generes ni muestres código, imágenes, ni enlaces externos. Solo responde texto en HTML amigable relacionado exclusivamente con seguros GNP o cotizaciones en México.'},
         { role: 'user', content: question }
       ]
     });
@@ -23,4 +28,8 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ message: 'Error al comunicarse con OpenAI' });
   }
 });
-
+// Puerto dinámico para Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Servidor escuchando en el puerto ${PORT}`);
+});
