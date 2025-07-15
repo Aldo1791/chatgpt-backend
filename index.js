@@ -14,7 +14,7 @@ app.post('/api/chat', async (req, res) => {
     const chat = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
-        { role: 'system', content: 'Eres un asesor experto en seguros GNP en México. Solo responde preguntas relacionadas con seguros en México.' },
+        { role: 'system', content: 'Responde como un asesor profesional de Seguros La Paz en México. Usa un tono cálido, agrega temas de consientización breves, emojis donde ayude, bullet points cuando sea lista, títulos cortos en <strong>, y al final invita a contactar a Seguros La Paz para asesoría o cotización. Responde en HTML limpio, no uses solo texto plano. Responde solo preguntas de seguros en México' },
         { role: 'user', content: question }
       ]
     });
